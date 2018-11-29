@@ -8,15 +8,15 @@
 
 function ConvertHandler() {
   
-  this.getNum = function(input) {
-    var result;
+  this.getNum = function(input, index) {
+    var result = input.slice(0, index);
     
     return result;
   };
   
-  this.getUnit = function(input) {
-    var result;
-    
+  this.getUnit = function(input, index) {
+    var result = input.slice(index, input.length);
+  
     return result;
   };
   
@@ -37,6 +37,16 @@ function ConvertHandler() {
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
     var result;
+
+    if(initUnit === 'gal') {
+      result = initNum * galToL;
+    } else if (initUnit === 'lbs') {
+      result = initNum * lbsToKg;
+    } else if (initUnit === 'mi') {
+      result = initNum * miToKm;
+    } else {
+      result = 'invalid';
+    }
     
     return result;
   };
