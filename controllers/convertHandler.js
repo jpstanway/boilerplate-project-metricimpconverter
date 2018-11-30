@@ -10,14 +10,16 @@ function ConvertHandler() {
   
   this.getNum = function(input, index) {
     var result = input.slice(0, index);
-    
-    return result;
+    result = parseInt(result);
+
+    return result ? result : 'invalid number';
   };
   
   this.getUnit = function(input, index) {
     var result = input.slice(index, input.length);
-  
-    return result;
+    const units = /^gal$|^l$|^km$|^mi$|^lbs$|^kg$/igm;
+
+    return result.search(units) > -1 ? result : 'invalid unit';
   };
   
   this.getReturnUnit = function(initUnit) {
@@ -38,16 +40,35 @@ function ConvertHandler() {
     const miToKm = 1.60934;
     var result;
 
-    if(initUnit === 'gal') {
-      result = initNum * galToL;
-    } else if (initUnit === 'lbs') {
-      result = initNum * lbsToKg;
-    } else if (initUnit === 'mi') {
-      result = initNum * miToKm;
-    } else {
-      result = 'invalid';
+    if (typeof initNum !== 'number' && initUnit === 'invalid unit') {
+      return initNum + ' and ' + initUnit;
+    } else if (typeof initNum !== 'number') {
+      return initNum;
     }
-    
+
+    switch(initUnit) {
+      case 'gal':
+        result = initNum * galToL + 'L';
+        break;
+      case 'l':
+        result = initNum / galToL + 'gal';  
+        break;
+      case 'lbs':
+        result = initNum * lbsToKg + 'kg';
+        break;
+      case 'kg':
+        result = initNum / lbsToKg + 'lbs';
+        break;
+      case 'mi':
+        result = initNum * miToKm + 'km';
+        break;
+      case 'km':
+        result = initNum / miToKm + 'mi';
+        break;
+      default:
+        return 'invalid unit';     
+    }
+
     return result;
   };
   
