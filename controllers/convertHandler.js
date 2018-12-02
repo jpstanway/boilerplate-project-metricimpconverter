@@ -5,21 +5,28 @@
 *       
 *       
 */
+const math = require('mathjs');
 
 function ConvertHandler() {
   
   this.getNum = function(input, index) {
     var result = input.slice(0, index);
-    result = parseInt(result);
+    
+    try {
+      result = math.eval(result);
+    } catch(error) {
+      console.error(error);
+      result = false;
+    }
 
-    return result ? result : 'invalid number';
+    return result;
   };
   
   this.getUnit = function(input, index) {
     var result = input.slice(index, input.length);
     const units = /^gal$|^l$|^km$|^mi$|^lbs$|^kg$/igm;
 
-    return result.search(units) > -1 ? result : 'invalid unit';
+    return result.search(units) > -1 ? result : false;
   };
   
   this.getReturnUnit = function(initUnit) {
@@ -40,10 +47,15 @@ function ConvertHandler() {
     const miToKm = 1.60934;
     var result;
 
-    if (typeof initNum !== 'number' && initUnit === 'invalid unit') {
-      return initNum + ' and ' + initUnit;
-    } else if (typeof initNum !== 'number') {
-      return initNum;
+    if (!initNum && !initUnit) {
+      console.log('both invalid');
+      return 'invalid number and unit';
+    } else if(!initNum) {
+      console.log('invalid number');
+      return 'invalid number';
+    } else if (!initUnit) {
+      console.log('invalid unit');
+      return 'invalid unit';
     }
 
     switch(initUnit) {
@@ -68,7 +80,7 @@ function ConvertHandler() {
       default:
         return 'invalid unit';     
     }
-
+    console.log(result);
     return result;
   };
   
