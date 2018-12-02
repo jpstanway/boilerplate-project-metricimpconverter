@@ -9,24 +9,31 @@ const math = require('mathjs');
 
 function ConvertHandler() {
   
-  this.getNum = function(input, index) {
+  this.getNum = function(input) {
+    var index = input.search(/[a-zA-Z]/);
     var result = input.slice(0, index);
+    var doubleFraction = result.match(/\//g);
     
+    // evaluate number
     try {
       result = math.eval(result);
     } catch(error) {
       console.error(error);
       result = false;
     }
-
+    
+    // check for double fractions
+    if(doubleFraction && doubleFraction.length > 1) {
+      result = false;
+    }
+    
     return result;
   };
   
-  this.getUnit = function(input, index) {
-    var result = input.slice(index, input.length);
-    const units = /^gal$|^l$|^km$|^mi$|^lbs$|^kg$/igm;
+  this.getUnit = function(input) {
+    var result;
 
-    return result.search(units) > -1 ? result : false;
+    return result;
   };
   
   this.getReturnUnit = function(initUnit) {
@@ -46,41 +53,7 @@ function ConvertHandler() {
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
     var result;
-
-    if (!initNum && !initUnit) {
-      console.log('both invalid');
-      return 'invalid number and unit';
-    } else if(!initNum) {
-      console.log('invalid number');
-      return 'invalid number';
-    } else if (!initUnit) {
-      console.log('invalid unit');
-      return 'invalid unit';
-    }
-
-    switch(initUnit) {
-      case 'gal':
-        result = initNum * galToL + 'L';
-        break;
-      case 'l':
-        result = initNum / galToL + 'gal';  
-        break;
-      case 'lbs':
-        result = initNum * lbsToKg + 'kg';
-        break;
-      case 'kg':
-        result = initNum / lbsToKg + 'lbs';
-        break;
-      case 'mi':
-        result = initNum * miToKm + 'km';
-        break;
-      case 'km':
-        result = initNum / miToKm + 'mi';
-        break;
-      default:
-        return 'invalid unit';     
-    }
-    console.log(result);
+    
     return result;
   };
   
