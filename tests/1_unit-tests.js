@@ -42,13 +42,13 @@ suite('Unit Tests', function(){
     
     test('Invalid Input (double fraction)', function(done) {
       var input = '2/5/7/3lbs';
-      assert.equal(convertHandler.getNum(input), false);
+      assert.isFalse(convertHandler.getNum(input));
       done();
     });
     
     test('No Numerical Input', function(done) {
       var input = '//';
-      assert.equal(convertHandler.getNum(input), false);
+      assert.isFalse(convertHandler.getNum(input));
       done();
     }); 
     
@@ -59,14 +59,17 @@ suite('Unit Tests', function(){
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
       input.forEach(function(ele) {
-        //assert
+        assert.equal(convertHandler.getUnit(ele), ele);
       });
       done();
     });
     
     test('Unknown Unit Input', function(done) {
-      
-      //done();
+      var input = ['','stone','22pounds','mb','bytes','1.3sdfsdf','fd123fdf','!!'];
+      input.forEach(function(ele) {
+        assert.isFalse(convertHandler.getUnit(ele));
+      });
+      done();
     });  
     
   });

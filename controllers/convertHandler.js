@@ -31,7 +31,13 @@ function ConvertHandler() {
   };
   
   this.getUnit = function(input) {
-    var result;
+    var index = input.search(/[a-zA-Z]/);
+    var result = input.slice(index, input.length);
+    var exp = /^gal$|^l$|^km$|^mi$|^lbs$|^kg$/igm;
+
+    if (result.search(exp) === -1) {
+      result = false;
+    }
 
     return result;
   };
