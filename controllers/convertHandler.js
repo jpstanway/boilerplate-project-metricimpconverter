@@ -44,12 +44,32 @@ function ConvertHandler() {
   
   this.getReturnUnit = function(initUnit) {
     var result;
+    const units = {
+      "gal": "l",
+      "l": "gal",
+      "kg": "lbs",
+      "lbs": "kg",
+      "mi": "km",
+      "km": "mi"
+    };
+
+    result = units[initUnit.toLowerCase()];
     
     return result;
   };
 
   this.spellOutUnit = function(unit) {
     var result;
+    const units = {
+      "gal": "gallons",
+      "l": "litres",
+      "mi": "miles",
+      "km": "kilometers",
+      "lbs": "pounds",
+      "kg": "kilograms"
+    };
+
+    result = units[unit];
     
     return result;
   };
@@ -59,8 +79,18 @@ function ConvertHandler() {
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
     var result;
-    
-    return result;
+    const conversion = {
+      "gal": initNum * galToL,
+      "l": initNum / galToL,
+      "lbs": initNum * lbsToKg,
+      "kg": initNum / lbsToKg,
+      "mi": initNum * miToKm,
+      "km": initNum / miToKm
+    };
+
+    result = conversion[initUnit];
+
+    return parseFloat(result.toFixed(4));
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {

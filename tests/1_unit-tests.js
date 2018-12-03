@@ -91,6 +91,11 @@ suite('Unit Tests', function(){
     
     test('For Each Valid Unit Inputs', function(done) {
       //see above example for hint
+      const input = ['gal', 'l', 'mi', 'km', 'lbs', 'kg'];
+      const expect = ['gallons', 'litres', 'miles', 'kilometers', 'pounds', 'kilograms'];
+      input.forEach(function(ele, i) {
+        assert.equal(convertHandler.spellOutUnit(ele), expect[i]);
+      });
       done();
     });
     
@@ -102,6 +107,7 @@ suite('Unit Tests', function(){
       var input = [5, 'gal'];
       var expected = 18.9271;
       assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
+      
       done();
     });
     
