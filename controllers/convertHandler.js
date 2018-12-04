@@ -19,12 +19,12 @@ function ConvertHandler() {
       result = math.eval(result);
     } catch(error) {
       console.error(error);
-      result = false;
+      return false;
     }
     
     // check for double fractions
     if(doubleFraction && doubleFraction.length > 1) {
-      result = false;
+      return false;
     }
     
     return result;
@@ -34,11 +34,11 @@ function ConvertHandler() {
     var index = input.search(/[a-zA-Z]/);
     var result = input.slice(index, input.length);
     var exp = /^gal$|^l$|^km$|^mi$|^lbs$|^kg$/igm;
-
+    
     if (result.search(exp) === -1) {
-      result = false;
+      return false;
     }
-
+    
     return result;
   };
   
@@ -53,8 +53,10 @@ function ConvertHandler() {
       "km": "mi"
     };
 
-    result = units[initUnit.toLowerCase()];
-    
+    if (initUnit) {
+      result = units[initUnit.toLowerCase()];
+    }
+
     return result;
   };
 
@@ -69,7 +71,9 @@ function ConvertHandler() {
       "kg": "kilograms"
     };
 
-    result = units[unit];
+    if (unit) {
+      result = units[unit.toLowerCase()];
+    }
     
     return result;
   };
@@ -88,14 +92,17 @@ function ConvertHandler() {
       "km": initNum / miToKm
     };
 
-    result = conversion[initUnit];
-    
-    return parseFloat(result.toFixed(4));
+    if (initUnit) {
+      result = conversion[initUnit.toLowerCase()];
+      result = parseFloat(result.toFixed(5));
+    }
+
+    return result;
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    var result;
-    
+    var result = `${initNum} ${this.spellOutUnit(initUnit)} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
+
     return result;
   };
   
